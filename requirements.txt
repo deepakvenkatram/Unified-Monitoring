@@ -1,0 +1,6 @@
+
+ansible
+kubernetes
+psutil
+docker
+rich

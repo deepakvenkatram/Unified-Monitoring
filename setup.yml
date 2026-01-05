@@ -1,0 +1,13 @@
+---
+- name: Setup Kubernetes Monitoring Environment
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: Install Python dependencies
+      ansible.builtin.pip:
+        requirements: "{{ playbook_dir }}/requirements.txt"
+        executable: pip3
+      vars:
+        ansible_python_interpreter: /usr/bin/python3

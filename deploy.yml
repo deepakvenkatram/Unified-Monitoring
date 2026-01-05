@@ -1,0 +1,65 @@
+---
+- name: Deploy and Run the Unified Monitor
+  hosts: monitoring_hosts
+  gather_facts: yes
+
+  vars:
+    # The destination path on the remote server where the project will be deployed.
+    remote_deploy_path: "/opt/unified-monitor"
+
+  tasks:
+    - name: Ensure Python 3 and Pip are installed
+      become: yes
+      ansible.builtin.package:
+        name:
+          - python3
+          - python3-pip
+        state: present
+      register: pkg_result
+      until: pkg_result is succeeded
+      retries: 3
+      delay: 5
+
+    - name: Create deployment directory on remote server
+      become: yes
+      ansible.builtin.file:
+        path: "{{ remote_deploy_path }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Copy project files to remote server
+      ansible.posix.synchronize:
+        src: .
+        dest: "{{ remote_deploy_path }}/"
+        archive: yes
+        delete: yes
+        rsync_opts:
+          - "--exclude=.git"
+          - "--exclude=*.pyc"
+          - "--exclude=__pycache__/"
+          - "--exclude=inventory.ini"
+          - "--exclude=deploy.yml"
+
+    - name: Install Python dependencies on remote server
+      ansible.builtin.pip:
+        requirements: "{{ remote_deploy_path }}/requirements.txt"
+        executable: pip3
+
+    - name: Copy local .env configuration to remote server
+      ansible.builtin.copy:
+        src: .env
+        dest: "{{ remote_deploy_path }}/.env"
+      ignore_errors: yes # Ignore if .env file doesn't exist locally
+
+    - name: Copy local config.yml to remote server
+      ansible.builtin.copy:
+        src: config.yml
+        dest: "{{ remote_deploy_path }}/config.yml"
+
+    - name: Start the monitor in watcher mode as a background process
+      ansible.builtin.shell:
+        cmd: "nohup python3 -m src.main --mode watcher > watcher.log 2>&1 &"
+        chdir: "{{ remote_deploy_path }}"
+      changed_when: false # This command always reports as changed, so we disable that.

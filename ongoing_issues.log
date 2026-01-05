@@ -1,0 +1,31 @@
+[2025-12-11 14:24:02] Subject: ONGOING ISSUE: Pod 'broken-deploy-5dd84b85f4-l8rmk' is still in 'CrashLoopBackOff' state (Cycle 2)
+Body:
+The issue for pod 'broken-deploy-5dd84b85f4-l8rmk' in namespace 'default' has been ongoing for 2 cycles.
+
+Pod Name: broken-deploy-5dd84b85f4-l8rmk
+Namespace: default
+Status: CrashLoopBackOff
+Time: 2025-12-11 14:24:02
+Action required: This issue requires attention as it has persisted.
+
+--------------------------------------------------------------------------------
+
+[2025-12-11 14:25:02] Subject: ONGOING ISSUE: Pod 'broken-deploy-5dd84b85f4-l8rmk' is still in 'CrashLoopBackOff' state (Cycle 3)
+Body:
+The issue for pod 'broken-deploy-5dd84b85f4-l8rmk' in namespace 'default' has been ongoing for 3 cycles.
+
+Pod Name: broken-deploy-5dd84b85f4-l8rmk
+Namespace: default
+Status: CrashLoopBackOff
+Time: 2025-12-11 14:25:02
+Action required: This issue requires attention as it has persisted.
+
+[2025-12-15 11:48:44] Subject: ONGOING ISSUE: Pod 'metrics-server-7bfffcd44-845ww' is still in 'CrashLoopBackOff' state (Cycle 2)
+Body:
+The issue for pod 'metrics-server-7bfffcd44-845ww' in namespace 'kube-system' has been ongoing for 2 cycles.
+
+Pod Name: metrics-server-7bfffcd44-845ww
+Namespace: kube-system
+Status: CrashLoopBackOff
+Time: 2025-12-15 11:48:44
+Action required: This issue requires attention as it has persisted.

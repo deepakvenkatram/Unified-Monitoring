@@ -1,0 +1,156 @@
+# Configuration for the Unified Monitor.
+# ----------------------------------------------------
+
+# How often the watcher should check for issues, in seconds.
+# watcher_interval_seconds: 60 # For testing purpose
+watcher_interval_seconds: 900
+
+# Number of cycles an issue must be active before an "ongoing issue" email is sent.
+ongoing_alert_cycles: 4
+
+# Default action for alerts: 'email', 'log_file', or 'both'
+default_alert_action: "email"
+
+# Proactive resource usage monitoring.
+# Alerts if a pod's usage exceeds a percentage of its defined limit.
+resource_usage_monitoring:
+  enabled: true
+  # Alert if CPU usage is over 90% of the pod's limit.
+  cpu_threshold_percent: 70
+  # Alert if Memory usage is over 90% of the pod's limit.
+  memory_threshold_percent: 90
+
+# Deployment health monitoring.
+# Alerts if deployments have issues like stuck rollouts or unavailable replicas.
+deployment_health_monitoring:
+  enabled: true
+  # Alert if more than this many replicas are unavailable (0 means any unavailable replica)
+  unavailable_replicas_threshold: 0
+  # Alert if a deployment rollout is stuck for this many seconds
+  stuck_rollout_timeout_seconds: 300 # 5 minutes
+
+# Global pod log scanning.
+# Scans logs of all pods for errors/warnings.
+global_pod_log_scanning:
+  enabled: true
+  lines_to_scan: 100 # Number of lines to fetch from each container's log
+  # List of namespaces to explicitly include in scanning. If empty, all are included (subject to exclusions).
+  include_namespaces: ["default"] # Example: ["default", "my-app-namespace"]
+  # List of namespaces to explicitly exclude from scanning. Exclusions take precedence.
+  exclude_namespaces:
+    - "kube-system"
+    - "kube-public"
+    - "kube-node-lease"
+    - "kube-flannel"
+    - "kube-proxy"
+  error_patterns:
+    - "error"
+    - "fail"
+    - "exception"
+    - "denied"
+    - "refused"
+  warning_patterns:
+    - "warn"
+    - "timeout"
+    - "deprecated"
+    - "unhealthy"
+
+# Pod statuses that will trigger an alert in watcher mode.
+pod_alert_statuses:
+  - "CrashLoopBackOff"
+  - "ImagePullBackOff"
+  - "OOMKilled"
+  - "Error"
+  - "Failed"
+  - "Evicted"
+
+# Pod log monitoring rules for the watcher.
+pod_log_monitoring:
+  enabled: true
+  # How many recent log lines to scan in each check.
+  tail_lines: 200 
+  # Define different monitoring rules for different sets of pods.
+  targets:
+    # Rule for pods with the label 'app=critical-service'.
+    - name: "Critical Services"
+      namespace: "default"
+      label_selector: "app=critical-service"
+      # A list of regex patterns to search for.
+      error_patterns:
+        - ".*Exception.*"
+        - ".*Traceback.*"
+        - ".*timed out.*"
+        - ".*Failed to connect.*"
+      # Alert if the total count of all pattern matches exceeds this in the time_window.
+      threshold: 5
+      # The time window to count errors in (e.g., '10m', '1h').
+      time_window: "10m"
+
+    # Rule for all pods in the 'kube-system' namespace.
+    - name: "Kube System Stability"
+      namespace: "kube-system"
+      # No label_selector means it applies to all pods in the namespace.
+      error_patterns:
+        - ".*server misbehaving.*"
+        - ".*authentication error.*"
+      threshold: 3
+      time_window: "30m"
+
+# Notify once when a pod reaches 'Completed' status
+notify_on_completed_pods: true
+
+# Network path monitoring configuration
+network_path_monitoring:
+  enabled: true
+  path: "/mnt/extraction_logs/"
+  email_on_unreachable: true
+
+# A list of log sources for the interactive menu.
+logs:
+  - display_name: "System Log"
+    command: "tail /var/log/syslog"
+    #path: "/var/log/syslog"
+  
+  - display_name: "Authentication Log"
+    command: "tail /var/log/auth.log"
+    #path: "/var/log/auth.log"
+
+  - display_name: "Docker Service Logs (last 50 lines)"
+    command: "journalctl -u docker.service -n 50 --no-pager"
+
+  - display_name: "Kernel Ring Buffer (dmesg)"
+    command: "dmesg --level=err,warn | tail -n 50"
+    
+  - display_name: "Package Management Logs"
+    path: "/var/log/dpkg.log"
+
+# Rules for parsing and color-coding log files in the interactive menu.
+log_parsing_rules:
+  - name: "Errors"
+    color: "red"
+    threshold: 10
+    keywords:
+      - "error"
+      - "err"
+      - "failed"
+      - "exception"
+      - "traceback"
+      - "critical"
+
+  - name: "Warnings"
+    color: "yellow"
+    threshold: 10
+    keywords:
+      - "warning"
+      - "warn"
+      - "timeout"
+      - "deprecated"
+
+  - name: "Success"
+    color: "green"
+    threshold: 1000 # Not typically used for alerting, but can be counted.
+    keywords:
+      - "success"
+      - "completed"
+      - "finished"
+      - "ok"

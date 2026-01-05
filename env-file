@@ -1,0 +1,26 @@
+# Specify the absolute path to your Kubernetes configuration file.
+# If this is commented out or left empty, the application will use the default path.
+KUBECONFIG_PATH=""
+ENVIRONMENT_NAME="Production-Testing-Dummy-Server"
+# --- Email Alerting Configuration ---
+# Your SMTP server details for sending email alerts.
+SMTP_HOST="smtp.office365.com"
+SMTP_PORT=587
+SMTP_USER="your_email@yourdomain.com"
+SMTP_PASSWORD="yourEmailPassword"
+#LOGO_URL="./Logo.jpeg"
+# The email address the alerts will be sent from.
+EMAIL_SENDER="SenderEmail@youDomain.com"
+# The email address(es) that will receive notifications when the application terminates.
+# This can be a separate list from EMAIL_RECIPIENT.
+TERMINATION_EMAIL_RECIPIENT="user_email@yourdomain.com"
+
+# The email address that will receive the alerts.
+EMAIL_RECIPIENT="your_email@yourdomain.com"
+
+# --- Google Cloud Configuration ---
+# Required for Google AI backend integration tests or specific cloud functionalities.
+# GOOGLE_API_KEY="your_google_api_key"
+# GOOGLE_CLOUD_PROJECT="your_google_cloud_project_id"
+# GOOGLE_CLOUD_LOCATION="your_google_cloud_location" # e.g., us-central1
+

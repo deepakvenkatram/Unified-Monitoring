@@ -1,0 +1,35 @@
+# ==================================================
+# Configuration for the Kubernetes Watcher
+# ==================================================
+
+# Pod statuses that will trigger an alert.
+# The watcher will check for pods in any of these states and send a notification.
+pod_alert_statuses:
+  - "CrashLoopBackOff"
+  - "ImagePullBackOff"
+  - "Error"
+  - "Failed"
+  - "Evicted"
+  - "OOMKilled"
+  - "RunContainerError"
+
+# --- Pod Log Monitoring ---
+pod_log_monitoring:
+  # If enabled, the watcher will scan pod logs for error keywords.
+  enabled: true
+
+  # A list of case-insensitive keywords that will trigger an alert if found in any pod's log.
+  error_keywords:
+    - "timeout"
+    - "exception"
+    - "traceback"
+    - "connection refused"
+    - "unauthorized"
+    - "access denied"
+    - "fatal"
+    - "critical"
+    - "npe" # NullPointerException
+
+  # The number of recent log lines to scan from each container on every check.
+  # Keeping this value reasonably low (e.g., 50-200) is recommended to reduce load on the Kubernetes API server.
+  tail_lines: 100
