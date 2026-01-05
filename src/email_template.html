@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Unified Monitor Alert</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="font-family: Arial, Helvetica, sans-serif; background-color: #f4f4f7; margin: 0; padding: 20px;">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td align="center">
+                <table width="600" border="0" cellspacing="0" cellpadding="0" style="max-width: 600px; width: 100%; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden;">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background-color: {{HEADER_COLOR}}; padding: 20px 25px;">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td align="left" style="color: #ffffff; vertical-align: middle;">
+                                        <h1 style="margin: 0; font-size: 24px; font-weight: bold;">Unified Monitor Alert</h1>
+                                    </td>
+                                    <td align="right" style="vertical-align: middle;">
+                                        <img src="cid:logo_image" alt="Logo" width="120" style="max-width: 120px; display: block;">
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding: 30px 25px; color: #333333; font-size: 16px; line-height: 1.6;">
+                            <!-- The content generated from Markdown will be injected here -->
+                            {{BODY_CONTENT}}
+                        </td>
+                    </tr>
+                    <!-- Call to Action Button -->
+                    <tr>
+                        <td style="padding: 10px 25px 30px 25px; text-align: center;">
+                            {{SHARE_IN_TEAMS_BUTTON}}
+                        </td>
+                    </tr>
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #ecf0f1; color: #333333; padding: 20px; text-align: center; font-size: 12px; border-top: 1px solid #dddddd;">
+                            <p style="margin: 0 0 10px 0;">Thanks,<br>The Production Support Team</p>
+                            <p style="margin: 0 0 10px 0;">Generated at {{TIMESTAMP}}</p>
+                            <p style="margin: 0; font-size: 10px; color: #333333;">
+                                This is an automated notification. Please do not reply directly to this email.
+                            </p>
+                            <br><br>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
