@@ -1,3 +1,5 @@
+<img alt="gitleaks badge" src="https://img.shields.io/badge/protected%20by-gitleaks-blue"> ![Static Badge](https://img.shields.io/badge/Devops-Deepak%20Venkatram-Green)
+
 # Unified Monitor
 
 A powerful, terminal-based monitoring tool designed for developers, DevOps, and Cloud Engineers to keep a close eye on Kubernetes clusters and their underlying host systems from a single, simple interface.
